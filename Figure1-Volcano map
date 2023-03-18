@@ -1,0 +1,25 @@
+##Volcano map
+library(ggplot2)
+library(ggrepel)
+Res<-na.omit(tempOutput)
+Res$sig[Res$P.Value>=0.05 | abs(Res$logFC) < 1] <- "not sig"    ###GREEN
+Res$sig[Res$P.Value<0.05 & Res$logFC >= 1] <- "up"     ###BLACK
+Res$sig[Res$P.Value<0.05 & Res$logFC <=-1] <- "down" ###RED  
+p<-ggplot(
+  Res, 
+  aes(x = logFC, 
+      y = -log10(P.Value), 
+      color=sig)) +
+  geom_point(alpha=0.9, size=1.5) +
+  scale_color_manual(values=c("#0072B5", "grey","#BC3C28"))+
+   geom_vline(xintercept=c(-1,1),lty=4,col="black",lwd=0.8) +
+  geom_hline(yintercept = -log10(0.05),lty=4,col="black",lwd=0.8) +
+  labs(x="logFC",
+       y="-log10(P.Value)")+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5), 
+        legend.position="right", 
+  )
+
+ggsave('04.volcano.jpg',width=8,height=6)
+ggsave('04.volcano.pdf',width=8,height=6)
