@@ -1,0 +1,4 @@
+immunocyte <- read.csv('immunocyte.csv',row.names = 1)
+gene <- read.csv('gene.csv',row.names = 1)
+library(psych) 
+R_pearson <- corr.test(gene,immunocyte,method = 'pearson')
